@@ -1,0 +1,31 @@
+<div class="title">
+    <h1>Faça login com</h1>
+    <img src="https://firebasestorage.googleapis.com/v0/b/gepetoservices.appspot.com/o/gs-preto.png?alt=media&token=7b67800c-b1ac-4f80-8ac5-86d1205463f6"
+        alt="Logo GepetoServices">
+</div>
+<div class="subtitle">
+    <h2>Confirme seu login como <u>{{username}}</u>.</h2>
+</div>
+<div class="app">
+    <h2>Informações do app que pede seu login:</h2>
+    <div class="appinfo">
+        <div class="appimg">
+            <img src={{appAvatar}} alt="Imagem do app">
+        </div>
+        <div class="appdesc">
+            <div>
+                <h3>{{appName}}</h3>
+            </div>
+            <div>
+                <h3>{{appDescription}}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="confirm">
+    <a href={{appRedirect}} class="danger-btn">Cancelar</a>
+    <a href={{redirectUrl}} class="success-btn">Confirmar</a>
+</div>
+<div class="redirect">
+    <p>Depois de confirmar, você será redirecionado para: {{appRedirect}}</p>
+</div>
