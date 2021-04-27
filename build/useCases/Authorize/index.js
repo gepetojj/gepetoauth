@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.authorizeController = exports.authorizeUseCase = void 0;
+const FirebaseSessionsRepository_1 = require("../../repositories/implementations/FirebaseSessionsRepository");
+const AuthorizeController_1 = require("./AuthorizeController");
+const AuthorizeUseCase_1 = require("./AuthorizeUseCase");
+const firebaseSessionsRepository = new FirebaseSessionsRepository_1.FirebaseSessionsRepository();
+const authorizeUseCase = new AuthorizeUseCase_1.AuthorizeUseCase(firebaseSessionsRepository);
+exports.authorizeUseCase = authorizeUseCase;
+const authorizeController = new AuthorizeController_1.AuthorizeController(authorizeUseCase);
+exports.authorizeController = authorizeController;

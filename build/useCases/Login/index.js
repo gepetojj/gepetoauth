@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.loginController = exports.loginUseCase = void 0;
+const FirebaseSessionsRepository_1 = require("../../repositories/implementations/FirebaseSessionsRepository");
+const FirebaseUsersRepository_1 = require("../../repositories/implementations/FirebaseUsersRepository");
+const LoginController_1 = require("./LoginController");
+const LoginUseCase_1 = require("./LoginUseCase");
+const firebaseSessionsRepository = new FirebaseSessionsRepository_1.FirebaseSessionsRepository();
+const firebaseUsersRepository = new FirebaseUsersRepository_1.FirebaseUsersRepository();
+const loginUseCase = new LoginUseCase_1.LoginUseCase(firebaseSessionsRepository, firebaseUsersRepository);
+exports.loginUseCase = loginUseCase;
+const loginController = new LoginController_1.LoginController(loginUseCase);
+exports.loginController = loginController;
