@@ -9,6 +9,7 @@ export interface AccessToken {
 	id: string;
 	validUntil: number;
 	payload: {
+		id: string;
 		username: string;
 		email: string;
 		avatar: string;

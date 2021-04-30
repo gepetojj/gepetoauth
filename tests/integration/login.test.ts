@@ -11,6 +11,7 @@ describe("Login flow", () => {
 	const app = new ExpressLoader().execute();
 	let code = "";
 	let accessToken = "";
+	let refreshToken = "";
 	it("should authorize next request, by recieving a 32-digit code", async () => {
 		const response = await request(app).get("/login/authorize").send();
 
@@ -24,32 +25,46 @@ describe("Login flow", () => {
 			username: "gepetojj",
 			password: "JoaoPedro;123",
 		};
-		const codePayload = {
+		const queryPayload = {
 			code,
 		};
 
 		const response = await request(app)
 			.post("/login/authenticate")
 			.send(userPayload)
-			.query(codePayload);
+			.query(queryPayload);
 
 		expect(response.status).toBe(200);
 		expect(response.body).toHaveProperty("accessToken");
 		expect(response.body).toHaveProperty("refreshToken");
 		accessToken = response.body.accessToken;
+		refreshToken = response.body.refreshToken;
 	});
 
 	it("should get user data from accessToken", async () => {
-		const codePayload = {
+		const queryPayload = {
 			access_token: accessToken,
 		};
 
 		const response = await request(app)
 			.get("/login/verify")
-			.query(codePayload);
+			.query(queryPayload);
 
 		expect(response.status).toBe(200);
 		expect(response.body).toHaveProperty("data");
+	});
+
+	it("should create a new accessToken, from user refreshToken", async () => {
+		const queryPayload = {
+			refresh_token: refreshToken,
+		};
+
+		const response = await request(app)
+			.get("/login/refresh")
+			.query(queryPayload);
+
+		expect(response.status).toBe(200);
+		expect(response.body).toHaveProperty("accessToken");
 	});
 });
 
@@ -60,14 +75,14 @@ describe("Login flow errors", () => {
 			username: "gepetojj",
 			password: "JoaoPedro;123",
 		};
-		const codePayload = {
+		const queryPayload = {
 			code: "",
 		};
 
 		const response = await request(app)
 			.post("/login/authenticate")
 			.send(userPayload)
-			.query(codePayload);
+			.query(queryPayload);
 
 		expect(response.status).toBe(400);
 	});
@@ -86,14 +101,14 @@ describe("Login flow errors", () => {
 			username: "gepetojj",
 			password: "JoaoPedro;123",
 		};
-		const codePayload = {
+		const queryPayload = {
 			code: codeId,
 		};
 
 		const response = await request(app)
 			.post("/login/authenticate")
 			.send(userPayload)
-			.query(codePayload);
+			.query(queryPayload);
 
 		expect(response.status).toBe(500);
 	});
@@ -112,14 +127,14 @@ describe("Login flow errors", () => {
 			username: "gepeto",
 			password: "JoaoPedro;123",
 		};
-		const codePayload = {
+		const queryPayload = {
 			code: codeId,
 		};
 
 		const response = await request(app)
 			.post("/login/authenticate")
 			.send(userPayload)
-			.query(codePayload);
+			.query(queryPayload);
 
 		expect(response.status).toBe(500);
 	});
@@ -138,14 +153,14 @@ describe("Login flow errors", () => {
 			username: "gepetojj",
 			password: "JoaoPedro;321",
 		};
-		const codePayload = {
+		const queryPayload = {
 			code: codeId,
 		};
 
 		const response = await request(app)
 			.post("/login/authenticate")
 			.send(userPayload)
-			.query(codePayload);
+			.query(queryPayload);
 
 		expect(response.status).toBe(500);
 	});
@@ -155,26 +170,38 @@ describe("Login flow errors", () => {
 			username: "inv",
 			password: "inv",
 		};
-		const codePayload = {
+		const queryPayload = {
 			code: "0000",
 		};
 
 		const response = await request(app)
 			.post("/login/authenticate")
 			.send(userPayload)
-			.query(codePayload);
+			.query(queryPayload);
 
 		expect(response.status).toBe(400);
 	});
 
 	it("should not get user data, because of invalid accessToken", async () => {
-		const codePayload = {
+		const queryPayload = {
 			access_token: "invaliddummyaccesstoken",
 		};
 
 		const response = await request(app)
 			.get("/login/verify")
-			.query(codePayload);
+			.query(queryPayload);
+
+		expect(response.status).toBe(400);
+	});
+
+	it("should not create a new accessToken, because of invalid refreshToken", async () => {
+		const queryPayload = {
+			refresh_token: "invaliddummyrefreshtoken",
+		};
+
+		const response = await request(app)
+			.get("/login/refresh")
+			.query(queryPayload);
 
 		expect(response.status).toBe(400);
 	});

@@ -8,4 +8,6 @@ export interface ISessionsRepository {
 	deleteCode(code: string): Promise<void>;
 
 	createNewRefreshToken(refreshToken: RefreshToken): Promise<void>;
+	findRefreshToken(refreshToken: string): Promise<RefreshToken | null>;
+	deleteRefreshToken(refreshToken: string): Promise<void>;
 }

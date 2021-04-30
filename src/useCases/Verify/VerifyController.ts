@@ -28,7 +28,7 @@ export class VerifyController {
 			logger.error(err);
 			return res
 				.status(500)
-				.json(response(false, "databaseerror", { stack: err.message }));
+				.json(response(false, "genericerror", { stack: err.message }));
 		}
 	}
 }

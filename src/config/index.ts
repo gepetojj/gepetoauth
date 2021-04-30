@@ -1,8 +1,7 @@
 import dotenv from "dotenv";
-
 dotenv.config();
 
-export default {
+const config = {
 	dev:
 		process.env.NODE_ENV === "development" ||
 		process.env.NODE_ENV === "test"
@@ -10,7 +9,7 @@ export default {
 			: false,
 	test: process.env.NODE_ENV === "test" ? true : false,
 	port: Number(process.env.PORT),
-	srcPath: `${__dirname}/src`,
+	srcPath: `${process.cwd()}/src`,
 
 	// Firebase config
 	pkid: String(process.env.PKID),
@@ -28,3 +27,4 @@ export default {
 	cookieSecret: String(process.env.COOKIE_SECRET),
 	accessTokenSecret: String(process.env.ACCESS_TOKEN_SECRET),
 };
+export default config;

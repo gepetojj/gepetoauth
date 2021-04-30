@@ -77,8 +77,29 @@ export function validateAccessToken(accessToken: any): ValidatorResponse {
 	}
 
 	let accessTokenSanitized = validator.trim(accessToken);
-	if (!validator.isJWT(accessToken)) {
+
+	if (validator.isEmpty(accessTokenSanitized)) {
+		return { error: true, message: messages.invalidatoken };
+	}
+	if (!validator.isJWT(accessTokenSanitized)) {
 		return { error: true, message: messages.invalidatoken };
 	}
 	return { error: false, value: accessTokenSanitized };
+}
+
+export function validateRefreshToken(refreshToken: any): ValidatorResponse {
+	if (!refreshToken) {
+		return { error: true, message: messages.invalidrtoken };
+	}
+
+	let refreshTokenSanitized = validator.trim(refreshToken);
+	refreshTokenSanitized = validator.escape(refreshTokenSanitized);
+
+	if (validator.isEmpty(refreshTokenSanitized)) {
+		return { error: true, message: messages.invalidrtoken };
+	}
+	if (!validator.isLength(refreshTokenSanitized, { min: 32, max: 32 })) {
+		return { error: true, message: messages.rtokenlength };
+	}
+	return { error: false, value: refreshTokenSanitized };
 }
