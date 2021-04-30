@@ -1,9 +1,6 @@
 import dotenv from "dotenv";
 
-const envExists = dotenv.config();
-if (envExists.error) {
-	throw new Error("Environment variables not found.");
-}
+dotenv.config();
 
 export default {
 	dev:
@@ -17,7 +14,7 @@ export default {
 
 	// Firebase config
 	pkid: String(process.env.PKID),
-	pk: String(process.env.PK.replace(/\\n/g, "\n")),
+	pk: String(process.env.PK).replace(/\\n/g, "\n"),
 	ce: String(process.env.CE),
 	cid: String(process.env.CID),
 	curl: String(process.env.CURL),
