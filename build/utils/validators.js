@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateCode = exports.validatePassword = exports.validateEmail = exports.validateUsername = void 0;
+exports.validateAccessToken = exports.validateCode = exports.validatePassword = exports.validateEmail = exports.validateUsername = void 0;
 const validator_1 = __importDefault(require("validator"));
 const response_1 = require("./response");
 function validateUsername(username) {
@@ -65,3 +65,14 @@ function validateCode(code) {
     return { error: false, value: codeSanitized };
 }
 exports.validateCode = validateCode;
+function validateAccessToken(accessToken) {
+    if (!accessToken) {
+        return { error: true, message: response_1.messages.invalidatoken };
+    }
+    let accessTokenSanitized = validator_1.default.trim(accessToken);
+    if (!validator_1.default.isJWT(accessToken)) {
+        return { error: true, message: response_1.messages.invalidatoken };
+    }
+    return { error: false, value: accessTokenSanitized };
+}
+exports.validateAccessToken = validateAccessToken;

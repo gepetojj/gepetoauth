@@ -8,6 +8,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const User_1 = require("../../entities/User");
 const response_1 = require("../../utils/response");
 const LoggerLoader_1 = __importDefault(require("../../loaders/LoggerLoader"));
+const DayjsLoader_1 = require("../../loaders/DayjsLoader");
 class CreateUserUseCase {
     constructor(usersRepository, mailProvider) {
         this.usersRepository = usersRepository;
@@ -15,6 +16,7 @@ class CreateUserUseCase {
     }
     async execute(data) {
         try {
+            const dayjs = new DayjsLoader_1.DayjsLoader().execute();
             const userExists = await this.usersRepository.findByUsername(data.username);
             const emailExists = await this.usersRepository.findByEmail(data.email);
             if (userExists || emailExists) {
@@ -32,7 +34,7 @@ class CreateUserUseCase {
                     emailConfirmed: false,
                 },
                 register: {
-                    date: 0,
+                    date: dayjs().valueOf(),
                     agent: data.agent,
                     ip: data.ip,
                 },
