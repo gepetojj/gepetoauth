@@ -81,4 +81,5 @@ export interface Codes {
 	genericerror: string;
 	databaseerror: string;
 	invalidendpoint: string;
+	ratelimited: string;
 }

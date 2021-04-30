@@ -11,8 +11,7 @@ import pinoHttp from "pino-http";
 
 import { router } from "../routes";
 import { DayjsLoader } from "./DayjsLoader";
-import { hsts } from "../middlewares/Hsts";
-import { userIp } from "../middlewares/Ip";
+import { hsts, userIp, rateLimiter } from "../middlewares";
 import config from "../config";
 import logger from "./LoggerLoader";
 import response from "../utils/response";
@@ -56,6 +55,7 @@ export class ExpressLoader {
 		app.use(compression());
 		app.use(userIp());
 		app.use(expressUseragent.express());
+		app.use(rateLimiter());
 		app.use(urlencoded({ extended: false }));
 		app.use(json());
 		app.use(

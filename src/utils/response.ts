@@ -35,6 +35,7 @@ export const messages: Codes = {
 	genericerror: "Houve um erro interno.",
 	databaseerror: "Houve um erro com o banco de dados.",
 	invalidendpoint: "Este endpoint não existe.",
+	ratelimited: "Você fez o máximo de requests disponíveis na API.",
 };
 
 // ERROR CODE PATTERN:
@@ -73,7 +74,8 @@ export const errorCodes: Codes = {
 	usercreated: "",
 	genericerror: "ERROR/GENERIC",
 	databaseerror: "ERROR/DATABASE",
-	invalidendpoint: "ERROR/ENDPOINT"
+	invalidendpoint: "ERROR/ENDPOINT",
+	ratelimited: "ERROR/RATELIMITED",
 };
 
 export const avatarURL =
