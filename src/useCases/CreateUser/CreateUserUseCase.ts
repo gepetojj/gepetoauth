@@ -6,6 +6,7 @@ import { ICreateUserRequestDTO } from "./CreateUserDTO";
 import { avatarURL } from "../../utils/response";
 import { IMailProvider } from "../../providers/IMailProvider";
 import logger from "../../loaders/LoggerLoader";
+import { DayjsLoader } from "../../loaders/DayjsLoader";
 
 export class CreateUserUseCase {
 	constructor(
@@ -15,6 +16,8 @@ export class CreateUserUseCase {
 
 	async execute(data: ICreateUserRequestDTO) {
 		try {
+			const dayjs = new DayjsLoader().execute();
+
 			const userExists = await this.usersRepository.findByUsername(
 				data.username
 			);
@@ -38,7 +41,7 @@ export class CreateUserUseCase {
 					emailConfirmed: false,
 				},
 				register: {
-					date: 0,
+					date: dayjs().valueOf(),
 					agent: data.agent,
 					ip: data.ip,
 				},

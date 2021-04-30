@@ -10,6 +10,7 @@ const dayjs = new DayjsLoader().execute();
 describe("Login flow", () => {
 	const app = new ExpressLoader().execute();
 	let code = "";
+	let accessToken = "";
 	it("should authorize next request, by recieving a 32-digit code", async () => {
 		const response = await request(app).get("/login/authorize").send();
 
@@ -35,6 +36,20 @@ describe("Login flow", () => {
 		expect(response.status).toBe(200);
 		expect(response.body).toHaveProperty("accessToken");
 		expect(response.body).toHaveProperty("refreshToken");
+		accessToken = response.body.accessToken;
+	});
+
+	it("should get user data from accessToken", async () => {
+		const codePayload = {
+			access_token: accessToken,
+		};
+
+		const response = await request(app)
+			.get("/login/verify")
+			.query(codePayload);
+
+		expect(response.status).toBe(200);
+		expect(response.body).toHaveProperty("data");
 	});
 });
 
@@ -147,6 +162,18 @@ describe("Login flow errors", () => {
 		const response = await request(app)
 			.post("/login/authenticate")
 			.send(userPayload)
+			.query(codePayload);
+
+		expect(response.status).toBe(400);
+	});
+
+	it("should not get user data, because of invalid accessToken", async () => {
+		const codePayload = {
+			access_token: "invaliddummyaccesstoken",
+		};
+
+		const response = await request(app)
+			.get("/login/verify")
 			.query(codePayload);
 
 		expect(response.status).toBe(400);

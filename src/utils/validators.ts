@@ -70,3 +70,15 @@ export function validateCode(code: any): ValidatorResponse {
 	}
 	return { error: false, value: codeSanitized };
 }
+
+export function validateAccessToken(accessToken: any): ValidatorResponse {
+	if (!accessToken) {
+		return { error: true, message: messages.invalidatoken };
+	}
+
+	let accessTokenSanitized = validator.trim(accessToken);
+	if (!validator.isJWT(accessToken)) {
+		return { error: true, message: messages.invalidatoken };
+	}
+	return { error: false, value: accessTokenSanitized };
+}
