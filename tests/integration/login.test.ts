@@ -2,7 +2,7 @@ import request from "supertest";
 
 import { ExpressLoader } from "../../src/loaders/ExpressLoader";
 import { FirebaseSessionsRepository } from "../../src/repositories/implementations/FirebaseSessionsRepository";
-import { createRefreshToken } from "../../src/utils/tokens";
+import { createAccessToken, createRefreshToken } from "../../src/utils/tokens";
 import { DayjsLoader } from "../../src/loaders/DayjsLoader";
 
 const dayjs = new DayjsLoader().execute();
@@ -204,5 +204,35 @@ describe("Login flow errors", () => {
 			.query(queryPayload);
 
 		expect(response.status).toBe(400);
+	});
+
+	it("should not create a new accessToken, because of expired refreshToken", async () => {
+		const firebaseSessionsRepository = new FirebaseSessionsRepository();
+		const refreshTokenId = createRefreshToken();
+		const unsensitiveUserData = {
+			id: "",
+			username: "",
+			email: "",
+			avatar: "",
+			level: 0,
+			registerDate: 0,
+			state: { banned: { is: false }, emailConfirmed: false },
+		};
+		await firebaseSessionsRepository.createNewRefreshToken({
+			id: refreshTokenId,
+			validUntil: dayjs().subtract(15, "minutes").valueOf(),
+			agent: "unknown unknown unknown unknown ",
+			ip: "::ffff:127.0.0.1",
+			user: unsensitiveUserData,
+		});
+		const queryPayload = {
+			refresh_token: refreshTokenId,
+		};
+
+		const response = await request(app)
+			.get("/login/refresh")
+			.query(queryPayload);
+
+		expect(response.status).toBe(500);
 	});
 });
