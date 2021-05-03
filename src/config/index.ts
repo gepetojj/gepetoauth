@@ -26,5 +26,10 @@ const config = {
 
 	cookieSecret: String(process.env.COOKIE_SECRET),
 	accessTokenSecret: String(process.env.ACCESS_TOKEN_SECRET),
+
+	// Redis
+	redisServer: String(process.env.REDIS_SERVER),
+	redisPort: Number(process.env.REDIS_PORT),
+	redisPass: String(process.env.REDIS_PASS),
 };
 export default config;

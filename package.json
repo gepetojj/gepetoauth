@@ -1,6 +1,6 @@
 {
   "name": "gepetoauth",
-  "version": "1.3.0",
+  "version": "1.4.2",
   "description": "Serviço de autenticação do GepetoServices.",
   "main": "build/src/main.js",
   "author": "Gepetojj",
@@ -32,6 +32,7 @@
     "pino-pretty": "^4.7.1",
     "pm2": "^4.5.6",
     "rate-limiter-flexible": "^2.2.1",
+    "redis": "^3.1.2",
     "request-ip": "^2.1.3",
     "validator": "^13.6.0"
   },
@@ -48,6 +49,7 @@
     "@types/nodemailer": "^6.4.1",
     "@types/pino": "^6.3.7",
     "@types/pino-http": "^5.4.0",
+    "@types/redis": "^2.8.28",
     "@types/request-ip": "^0.0.35",
     "@types/supertest": "^2.0.11",
     "@types/validator": "^13.1.3",
