@@ -3,11 +3,7 @@ import { Request, Response } from "express";
 import response from "../../utils/response";
 import logger from "../../loaders/LoggerLoader";
 import { LoginUseCase } from "./LoginUseCase";
-import {
-	validateCode,
-	validatePassword,
-	validateUsername,
-} from "../../utils/validators";
+import { validatePassword, validateUsername } from "../../utils/validators";
 
 export class LoginController {
 	constructor(private loginUseCase: LoginUseCase) {}
@@ -15,32 +11,24 @@ export class LoginController {
 	async handle(req: Request, res: Response): Promise<Response> {
 		try {
 			let { username, password } = req.body;
-			let code = String(req.query.code);
 			const agent = `${req.useragent?.browser} ${req.useragent?.version} ${req.useragent?.os} ${req.useragent?.platform} ${req.useragent?.source}`;
 			const ip = req.realIp;
 
 			const usernameValidation = validateUsername(username);
 			const passwordValidation = validatePassword(password);
-			const codeValidation = validateCode(code);
 
-			if (
-				usernameValidation.error ||
-				passwordValidation.error ||
-				codeValidation.error
-			) {
+			if (usernameValidation.error || passwordValidation.error) {
 				return res.status(400).json(
 					response(true, "invaliddata", {
 						errors:
 							usernameValidation.message ||
-							passwordValidation.message ||
-							codeValidation.message,
+							passwordValidation.message,
 					})
 				);
 			}
 
 			username = usernameValidation.value;
 			password = passwordValidation.value;
-			code = codeValidation.value;
 
 			const {
 				accessToken,
@@ -48,7 +36,6 @@ export class LoginController {
 			} = await this.loginUseCase.execute({
 				username,
 				password,
-				code,
 				agent,
 				ip,
 			});
