@@ -46,7 +46,7 @@ export class LoginController {
 			logger.error(err);
 			return res
 				.status(500)
-				.json(response(false, "genericerror", { stack: err.message }));
+				.json(response(true, "genericerror", { stack: err.message }));
 		}
 	}
 }

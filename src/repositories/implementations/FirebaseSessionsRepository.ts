@@ -1,5 +1,4 @@
 import logger from "../../loaders/LoggerLoader";
-import { Code } from "../../entities/Code";
 import { ISessionsRepository } from "../ISessionsRepository";
 import { firestore } from "../../loaders/FirebaseLoader";
 import { RefreshToken } from "../../entities/RefreshToken";
