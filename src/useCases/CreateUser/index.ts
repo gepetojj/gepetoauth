@@ -3,6 +3,7 @@ import { MailtrapMailProvider } from "../../providers/implementations/MailtrapMa
 import { FirebaseUsersRepository } from "../../repositories/implementations/FirebaseUsersRepository";
 import { CreateUserController } from "./CreateUserController";
 import { CreateUserUseCase } from "./CreateUserUseCase";
+import config from "../../config";
 
 const mailtrapMailProvider = new MailtrapMailProvider();
 const mailgunMailProvider = new MailgunMailProvider();
@@ -10,9 +11,7 @@ const firebaseUsersRepository = new FirebaseUsersRepository();
 
 const createUserUseCase = new CreateUserUseCase(
 	firebaseUsersRepository,
-	process.env.NODE_ENV === "development"
-		? mailtrapMailProvider
-		: mailgunMailProvider
+	config.dev || config.test ? mailtrapMailProvider : mailgunMailProvider
 );
 
 const createUserController = new CreateUserController(createUserUseCase);
