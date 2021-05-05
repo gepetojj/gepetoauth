@@ -55,22 +55,6 @@ export function validatePassword(password: any): ValidatorResponse {
 	return { error: false, value: password };
 }
 
-export function validateCode(code: any): ValidatorResponse {
-	if (!code) {
-		return { error: true, message: messages.invalidcode };
-	}
-
-	let codeSanitized = validator.trim(code);
-	codeSanitized = validator.escape(codeSanitized);
-	if (validator.isEmpty(codeSanitized)) {
-		return { error: true, message: messages.invalidcode };
-	}
-	if (!validator.isLength(codeSanitized, { min: 32, max: 32 })) {
-		return { error: true, message: messages.codelength };
-	}
-	return { error: false, value: codeSanitized };
-}
-
 export function validateAccessToken(accessToken: any): ValidatorResponse {
 	if (!accessToken) {
 		return { error: true, message: messages.invalidatoken };

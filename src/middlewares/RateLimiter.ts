@@ -51,10 +51,12 @@ export function rateLimiter() {
 		};
 
 		const rateLimiter = new RateLimiterRedis(options);
+		if (config.test) {
+			return next();
+		}
 		return rateLimiter
 			.consume(ip, 1)
 			.then((response) => {
-				console.log(response);
 				const headers = getHeaders(response, options.points);
 				res.set(headers);
 				return next();

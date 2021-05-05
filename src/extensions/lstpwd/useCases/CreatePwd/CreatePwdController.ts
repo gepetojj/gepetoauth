@@ -33,11 +33,13 @@ export class CreatePwdController {
 			const icon = "verified-user";
 			password = passwordValidation.value;
 
-			await this.createPwdUseCase.execute({
+			const passwordId = await this.createPwdUseCase.execute({
 				user: req.user,
 				password: { service, icon, password },
 			});
-			return res.json(response(false, "passwordcreated"));
+			return res.json(
+				response(false, "passwordcreated", { id: passwordId })
+			);
 		} catch (err) {
 			logger.error(err);
 			return res

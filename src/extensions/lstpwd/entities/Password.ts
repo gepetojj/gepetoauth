@@ -1,5 +1,3 @@
-import { createId } from "../../../utils/tokens";
-
 export class Password {
 	public readonly passwordId: string;
 
@@ -9,11 +7,7 @@ export class Password {
 	public passwordHash: string;
 	public passwordIv: string;
 
-	constructor(data: Omit<Password, "passwordId">, id?: string) {
+	constructor(data: Password) {
 		Object.assign(this, data);
-
-		if (!id) {
-			this.passwordId = createId();
-		}
 	}
 }

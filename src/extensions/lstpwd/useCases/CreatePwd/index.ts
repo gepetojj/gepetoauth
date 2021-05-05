@@ -1,10 +1,10 @@
-import { AirtablePwdsRepository } from "../../repositories/implementations/AirtablePwdsRepository";
+import { FirebasePwdsRepository } from "../../repositories/implementations/FirebasePwdsRepository";
 import { CreatePwdController } from "./CreatePwdController";
 import { CreatePwdUseCase } from "./CreatePwdUseCase";
 
-const airtablePwdsRepository = new AirtablePwdsRepository();
+const firebasePwdsRepository = new FirebasePwdsRepository();
 
-const createPwdUseCase = new CreatePwdUseCase(airtablePwdsRepository);
+const createPwdUseCase = new CreatePwdUseCase(firebasePwdsRepository);
 const createPwdController = new CreatePwdController(createPwdUseCase);
 
 export { createPwdUseCase, createPwdController };

@@ -50,3 +50,19 @@ export function validatePassword(password: any): ValidatorResponse {
 	const sanitizedPassword = validator.escape(password);
 	return { error: false, value: sanitizedPassword };
 }
+
+export function validatePasswordId(passwordId: any): ValidatorResponse {
+	if (!passwordId) {
+		return { error: true, message: messages.invalidpassword };
+	}
+
+	if (validator.isEmpty(passwordId)) {
+		return { error: true, message: messages.invalidpassword };
+	}
+	if (!validator.isLength(passwordId, { min: 14, max: 14 })) {
+		return { error: true, message: messages.invalidpassword };
+	}
+
+	const sanitizedPasswordId = validator.escape(passwordId);
+	return { error: false, value: sanitizedPasswordId };
+}

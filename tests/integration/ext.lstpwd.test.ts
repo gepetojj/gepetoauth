@@ -8,6 +8,8 @@ const dayjs = new DayjsLoader().execute();
 
 describe("Extension flow: lstpwd", () => {
 	const app = new ExpressLoader().execute();
+	let accessToken = "";
+	let pwdId = "";
 
 	it("should store a new password in the database", async () => {
 		const unsensitiveUserData = {
@@ -20,6 +22,7 @@ describe("Extension flow: lstpwd", () => {
 			state: { banned: { is: false }, emailConfirmed: false },
 		};
 		const token = createAccessToken(unsensitiveUserData);
+		accessToken = token;
 
 		const headers = {
 			authorization: `Bearer ${token}`,
@@ -34,6 +37,34 @@ describe("Extension flow: lstpwd", () => {
 			.send(body)
 			.set(headers);
 		expect(response.status).toBe(200);
+		expect(response.body).toHaveProperty("id");
+		pwdId = response.body.id;
+	});
+
+	it("should delete a password from the database", async () => {
+		const headers = {
+			authorization: `Bearer ${accessToken}`,
+		};
+		const query = {
+			password_id: pwdId,
+		};
+
+		const response = await request(app)
+			.delete("/ext/lstpwd/delete")
+			.query(query)
+			.set(headers);
+		expect(response.status).toBe(200);
+	});
+
+	it("should get all user's passwords", async () => {
+		const headers = {
+			authorization: `Bearer ${accessToken}`,
+		};
+		const response = await request(app)
+			.get("/ext/lstpwd/passwords")
+			.set(headers);
+		expect(response.status).toBe(200);
+		expect(response.body).toHaveProperty("passwords");
 	});
 });
 

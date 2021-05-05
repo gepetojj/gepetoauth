@@ -9,6 +9,8 @@ export interface Messages extends Codes {
 	invalidicon: string;
 
 	passwordcreated: string;
+	passworddeleted: string;
+	yourpasswords: string;
 }
 
 export const messages: Messages = {
@@ -16,6 +18,8 @@ export const messages: Messages = {
 	invalidservice: "O campo 'serviço' está inválido",
 	invalidicon: "O campo 'icon' está inválido.",
 	passwordcreated: "Sua senha foi salva com sucesso.",
+	passworddeleted: "Sua senha foi deletada com sucesso.",
+	yourpasswords: "Suas senhas salvas listadas.",
 };
 
 export const errorCodes: Messages = {
@@ -23,6 +27,8 @@ export const errorCodes: Messages = {
 	invalidservice: "BODY/SERVICE",
 	invalidicon: "BODY/ICON",
 	passwordcreated: "",
+	passworddeleted: "",
+	yourpasswords: "",
 };
 
 export function response(

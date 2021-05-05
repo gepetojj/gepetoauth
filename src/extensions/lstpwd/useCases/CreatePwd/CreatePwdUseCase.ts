@@ -31,7 +31,7 @@ export class CreatePwdUseCase {
 		return promise;
 	}
 
-	async execute(data: ICreatePwdDTO) {
+	async execute(data: ICreatePwdDTO): Promise<string> {
 		try {
 			return this.generateKey(data.user.name, config.passwordSalt)
 				.then(async (key) => {
@@ -46,8 +46,9 @@ export class CreatePwdUseCase {
 						cipher.final(),
 					]);
 
+					const passwordId = createId();
 					const passwordData: Password = {
-						passwordId: createId(),
+						passwordId,
 						ownerId: data.user.id,
 						service: data.password.service,
 						icon: data.password.icon,
@@ -57,6 +58,7 @@ export class CreatePwdUseCase {
 					await this.passwordsRepository.createNewPassword(
 						passwordData
 					);
+					return passwordId;
 				})
 				.catch((err) => {
 					throw new Error(err);
