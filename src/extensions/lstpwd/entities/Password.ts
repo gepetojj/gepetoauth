@@ -4,6 +4,7 @@ export class Password {
 	public ownerId: string;
 	public service: string;
 	public icon: string;
+	public password?: string;
 	public passwordHash: string;
 	public passwordIv: string;
 

@@ -10,7 +10,7 @@ export class GetAllPwdsController {
 	async handle(req: Request, res: Response): Promise<Response> {
 		try {
 			const passwords = await this.getAllPwdsUseCase.execute({
-				user: { id: req.user.id },
+				user: req.user,
 			});
 			return res.json(response(false, "yourpasswords", { passwords }));
 		} catch (err) {

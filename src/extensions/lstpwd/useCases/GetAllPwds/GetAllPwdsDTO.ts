@@ -1,3 +1,3 @@
 export interface IGetAllPwdsDTO {
-	user: { id: string };
+	user: { id: string; name: string };
 }
