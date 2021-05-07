@@ -56,11 +56,14 @@ export class GetAllPwdsUseCase {
 			const passwords = await this.passwordsRepository.findAllPasswords(
 				data.user.id
 			);
-			const decryptedPasswords = await this.decryptArray(
-				data.user.name,
-				passwords
-			);
-			return decryptedPasswords;
+			if (passwords.length > 0) {
+				const decryptedPasswords = await this.decryptArray(
+					data.user.name,
+					passwords
+				);
+				return decryptedPasswords;
+			}
+			return passwords;
 		} catch (err) {
 			logger.error(err);
 			throw new Error("Não foi possível retornar suas senhas.");
